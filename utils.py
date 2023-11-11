@@ -155,7 +155,7 @@ def convert_from_color_(arr_3d, palette=None):
 
 def display_predictions(pred, vis, gt=None, caption=""):
     if gt is None:
-        vis.images([np.transpose(pred, (2, 0, 1))],
+        vis.image(np.transpose(pred, (2, 0, 1)),
                     opts={'caption': caption})
     else:
         vis.images([np.transpose(pred, (2, 0, 1)),

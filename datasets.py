@@ -10,7 +10,7 @@ import torch.utils
 import torch.utils.data
 import os
 from tqdm import tqdm
-
+from sklearn import preprocessing
 
 try:
     # Python 3
@@ -236,7 +236,15 @@ def get_dataset(dataset_name, target_folder="./", datasets=DATASETS_CONFIG,noGT=
     ignored_labels = list(set(ignored_labels))
 
     # Normalization
-    # img = np.asarray(img, dtype="float32")
+    img1 = np.asarray(img1, dtype="float32")
+
+    #!!!! added as is from HSi prij
+    data = img1.reshape(np.prod(img1.shape[:2]), np.prod(img1.shape[2:]))
+    # data = preprocessing.scale(data)
+    data = preprocessing.minmax_scale(data)
+    img1 = data.reshape(img1.shape)
+    #!!!
+
     # img = (img - np.min(img)) / (np.max(img) - np.min(img))
     #img2 = open_file(folder + 'LiDAR.mat')['LiDAR'].astype(np.float32)
 

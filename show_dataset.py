@@ -65,7 +65,7 @@ invert_palette = {v: k for k, v in palette.items()}
 
 # Labels legend
 for i, val in enumerate(LABEL_VALUES):
-    rect = np.full((20, 20), i, dtype=int)
+    rect = np.full((40, 40), i, dtype=int)
     display_predictions(convert_to_color(rect), viz,
                         caption="Label name -- {} --- with number: {}".format(LABEL_VALUES[i], i))
 

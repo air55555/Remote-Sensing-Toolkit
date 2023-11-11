@@ -2,6 +2,8 @@
 You can use venv from the project 'hsi'. Just point to it in the project det.
 Nothing to install additionally 
 
+### Houston 2013 dataset  ###
+The processed .mat files can be obtained on [google drive](https://drive.google.com/file/d/1cyA7sKQlh2c7qrIb7gzexivoyXG8Vie2/view?usp=sharing).
 
 ### 10_29 dataset  ###
 Unzip multiarray 10_29.7z to Datasets/10_29
