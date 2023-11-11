@@ -3,6 +3,10 @@ You can use venv from the project 'hsi'. Just point to it in the project det.
 Nothing to install additionally 
 
 
+### 10_29 dataset  ###
+Unzip multiarray 10_29.7z to Datasets/10_29
+
+
 ### Show dataset details ###
 1) Run visdom server : python -m visdom.server
 2) Run 'show_dataset.py --dataset 10_29 --with_exploration '
