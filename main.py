@@ -21,7 +21,7 @@ from torchsummary import summary
 import numpy as np
 import sklearn.svm
 import sklearn.model_selection
-from skimage import io
+#from skimage import io
 
 # Visualization
 import seaborn as sns

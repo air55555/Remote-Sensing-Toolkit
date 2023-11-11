@@ -12,6 +12,49 @@ from scipy import io, misc
 import os
 import re
 import torch
+def txt_to_lst(file_path):
+    try:
+        new_strings = []
+        stopword = open(file_path, "r")
+        lines = stopword.read().split('\n')
+        for string in lines:
+            new_string = string.replace('"', "")
+            new_string = string.replace("'", "")
+            new_strings.append(new_string)
+        return new_strings
+        # print(lines)
+
+    except Exception as e:
+        print(e)
+def my_get_anno(name, remove_uncertain_blood=True, clean=True):
+    """
+    Returns annotation (GT) for data files as 2D int numpy array
+    Classes:
+
+    Parameters:
+    ---------------------
+    name: name
+    clean: if True, remove damaged line
+    remove_uncertain_blood: if True, removes class 8
+
+    Returns:
+    -----------------------
+    annotation as numpy 2D array
+    """
+    # name = convert_name(name)
+    # filename = "{}anno/{}".format(PATH_DATA, name)
+    anno = np.load(name)['gt']
+    # removal of damaged sensor line
+    # if clean and name != 'F_2k':
+    #    anno = np.delete(anno, 445, 0)
+    # remove uncertain blood + technical classes
+    if remove_uncertain_blood:
+        anno[anno > 7] = 0
+    else:
+        anno[anno > 8] = 0
+
+    return anno
+
 
 def get_device(ordinal):
     # Use GPU ?
@@ -26,6 +69,29 @@ def get_device(ordinal):
         device = torch.device('cpu')
     return device
 
+from PIL import Image
+def my_open_file(dataset):
+    _, ext = os.path.splitext(dataset)
+    ext = ext.lower()
+    if ext == '.png':
+        img = Image.open(dataset)
+        img = img.convert('L')
+        img_array = np.array(img)
+        return img_array
+    if ext == '.mat':
+        # Load Matlab array
+        return io.loadmat(dataset)
+    elif ext == '.tif' or ext == '.tiff':
+        # Load TIFF file
+        return misc.imread(dataset)
+    elif ext == '.hdr':
+        img = spectral.open_image(dataset)
+        return img.load()
+    if ext == '.npz':
+        # blood ds
+        return my_get_anno(dataset)
+    else:
+        raise ValueError("Unknown file format: {}".format(ext))
 
 def open_file(dataset):
     _, ext = os.path.splitext(dataset)

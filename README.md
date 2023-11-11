@@ -1,3 +1,45 @@
+### Setup ####
+You can use venv from the project 'hsi'. Just point to it in the project det.
+Nothing to install additionally 
+
+
+### Show dataset details ###
+1) Run visdom server : python -m visdom.server
+2) Run 'show_dataset.py --dataset 10_29 --with_exploration '
+       You can use --folder option for other, then "Datasets" 
+3) You can navigate to http://localhost:8097 to see the output 
+
+
+
+
+
+
+
+
+
+
+
+---------------------REFERENCE___________
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # Deep Learning Methods for Multi-modal Remote Sensing Classification
 
 ![author](https://img.shields.io/badge/author-likyoo-blueviolet.svg)![last commit](https://img.shields.io/github/last-commit/likyoo/Multimodal-Remote-Sensing-Toolkit.svg)![license](https://img.shields.io/github/license/likyoo/Multimodal-Remote-Sensing-Toolkit.svg)

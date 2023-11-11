@@ -11,6 +11,7 @@ import torch.utils.data
 import os
 from tqdm import tqdm
 
+
 try:
     # Python 3
     from urllib.request import urlretrieve
@@ -18,7 +19,7 @@ except ImportError:
     # Python 2
     from urllib import urlretrieve
 
-from utils import open_file, padding_image
+from utils import open_file, padding_image , my_open_file
 
 DATASETS_CONFIG = {
     "Houston2013": {
@@ -57,7 +58,7 @@ class TqdmUpTo(tqdm):
         self.update(b * bsize - self.n)  # will also set self.n = b * bsize
 
 
-def get_dataset(dataset_name, target_folder="./", datasets=DATASETS_CONFIG):
+def get_dataset(dataset_name, target_folder="./", datasets=DATASETS_CONFIG,noGT=False):
     """Gets the dataset specified by name and return the related components.
     Args:
         dataset_name: string with the name of the dataset
@@ -209,15 +210,20 @@ def get_dataset(dataset_name, target_folder="./", datasets=DATASETS_CONFIG):
     else:
         # Custom dataset
         (
-            img,
+            img1,
             gt,
             rgb_bands,
             ignored_labels,
             label_values,
             palette,
-        ) = CUSTOM_DATASETS_CONFIG[dataset_name]["loader"](folder)
+        ) = CUSTOM_DATASETS_CONFIG[dataset_name]["loader"](folder,noGT)
 
-    # Filter NaN out
+        img2 = my_open_file(folder + 'lidar1024.png')
+        minimal = img2.min()
+        maximal = img2.max()
+        img2 = (img2 - minimal) / (maximal - minimal)
+        img2 = np.expand_dims(img2, axis=2)
+        # Filter NaN out
     nan_mask = np.isnan(img1.sum(axis=-1))
     if np.count_nonzero(nan_mask) > 0:
         print(
@@ -232,6 +238,9 @@ def get_dataset(dataset_name, target_folder="./", datasets=DATASETS_CONFIG):
     # Normalization
     # img = np.asarray(img, dtype="float32")
     # img = (img - np.min(img)) / (np.max(img) - np.min(img))
+    #img2 = open_file(folder + 'LiDAR.mat')['LiDAR'].astype(np.float32)
+
+    #img2 = np.expand_dims(img2, axis=2)  # (349, 1905) --> (349, 1905, 1)
 
     # the shapes of img1 and img2 are both (H, W, C)
     return img1, img2, gt, label_values, ignored_labels, rgb_bands, palette
