@@ -387,6 +387,27 @@ for run in range(N_RUNS):
 
     probabilities = test(model, img1, img2, hyperparams)
 
+    prediction = np.zeros((len(probabilities), len(probabilities[0])))
+    #pr = probabilities[300:350, 130:170]
+    for i in range(len(probabilities)):
+        for j in range(len(probabilities[i])):
+            ar = probabilities[i][j]
+            ar_filtered = [i for i, v in enumerate(ar) if v > 9]
+            if len(ar_filtered) > 2:
+                prediction[i][j] = 0
+            else:
+                if len(ar_filtered) == 1:
+                    prediction[i][j] = ar_filtered[0]
+                else:
+                    prediction[i][j] = 0
+
+    color_prediction = convert_to_color(prediction)
+    display_predictions(color_prediction, viz, gt=None, caption="Prediction raw")
+
+    prediction2 = np.argmax(probabilities, axis=-1)
+    color_prediction2 = convert_to_color(prediction2)
+    display_predictions(color_prediction2, viz, gt=None, caption="Prediction raw2")
+
     try:
         prediction = np.argmax(probabilities, axis=-1)
         run_results = metrics(

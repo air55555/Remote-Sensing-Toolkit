@@ -223,6 +223,7 @@ def get_dataset(dataset_name, target_folder="./", datasets=DATASETS_CONFIG,noGT=
         maximal = img2.max()
         img2 = (img2 - minimal) / (maximal - minimal)
         img2 = np.expand_dims(img2, axis=2)
+        img2 = np.asarray(img2, dtype="float32")
         # Filter NaN out
     nan_mask = np.isnan(img1.sum(axis=-1))
     if np.count_nonzero(nan_mask) > 0:
@@ -235,12 +236,19 @@ def get_dataset(dataset_name, target_folder="./", datasets=DATASETS_CONFIG,noGT=
 
     ignored_labels = list(set(ignored_labels))
 
-    # Normalization
+
+    # # normalization method 1: map to [0, 1]
+    # [m, n, l] = img1.shape
+    # for i in range(l):
+    #     minimal = img1[:, :, i].min()
+    #     maximal = img1[:, :, i].max()
+    #     img1[:, :, i] = (img1[:, :, i] - minimal) / (maximal - minimal)
+
+    #!!!! added as is from HSi prij . needed to show mean spectrum
+        # Normalization
     img1 = np.asarray(img1, dtype="float32")
 
-    #!!!! added as is from HSi prij
     data = img1.reshape(np.prod(img1.shape[:2]), np.prod(img1.shape[2:]))
-    # data = preprocessing.scale(data)
     data = preprocessing.minmax_scale(data)
     img1 = data.reshape(img1.shape)
     #!!!
