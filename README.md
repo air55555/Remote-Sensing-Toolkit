@@ -16,7 +16,7 @@ Unzip multiarray 10_29.7z to Datasets/10_29
 3) You can navigate to http://localhost:8097 to see the output 
 
 ### Train and infer 10_29
---epoch 8 --lr 0.001 --batch_size 64 --seed 0 --dataset 10_29     --cuda 0
+Run 'main.py --epoch 8 --lr 0.001 --batch_size 64 --seed 0 --dataset 10_29     --cuda 0'
 
 
 
